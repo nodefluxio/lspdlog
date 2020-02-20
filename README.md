@@ -22,13 +22,15 @@ All credits go to Gabi Melman and [`spdlog`](https://github.com/gabime/spdlog) c
 ```bash
 $ cd /path/project/directory/
 $ git submodule add https://github.com/nodefluxio/lspdlog.git
+$ cd lspdlog
+$ git submodule update --init --recursive
 ```
 
 2. Unleash the logger in `CMakeLists.txt`:
 
 ```cmake
 project(my_project)           #<-- necessary to set console name
-option(LSPDLOG_ENABLE_TRACE_LOGGING "Enable trace logging." OFF)
+option(${PROJECT_NAME}_LSPDLOG_ENABLE_TRACE_LOGGING "Enable trace logging." OFF)
 find_package(Threads REQUIRED)
 add_subdirectory(lspdlog)
 include_directories(${LSPDLOG_INCLUDE_DIRS})
@@ -45,30 +47,48 @@ target_link_libraries(my_project ${CMAKE_THREAD_LIBS_INIT})
 This package defines automatically the following macros:
 
 ```cpp
-MY_PROJECT_NAME_INFO(...);
-MY_PROJECT_NAME_WARN(...);
-MY_PROJECT_NAME_ERROR(...);
-MY_PROJECT_NAME_CRITICAL(...);
+MY_PROJECT_INFO(...);
+MY_PROJECT_WARN(...);
+MY_PROJECT_ERROR(...);
+MY_PROJECT_CRITICAL(...);
 ```
 
 ### Debug Mode
 
-To enable debugging, make sure the option in the cmake below is set `ON`
+To enable debugging, simply set `Debug` for the CMAKE project
+
+```bash
+$ cmake -DCMAKE_BUILD_TYPE=Debug ..
+```
+
+#### Runtime Debugging
+
+Besides, the debug mode can easily be activated during runtime, by suplying option `LSPDLOG_RUNTIME_DEBUG` and set to `ON`
+
+```cmake
+option(LSPDLOG_RUNTIME_DEBUG "Enable runtime debug mode." ON)
+```
+
+#### Trace Mode
+
+In addition, one advance feature in debugging is trace logging, that can show more details function and files that calls the trace logger. Simply, make sure the option in enabled as shown below:
 
 ```cmake
 option(LSPDLOG_ENABLE_TRACE_LOGGING "Enable trace logging." ON)
 ```
 
-Afterwards, Debug and Trace log messages will be displayed on the console.
+#### Debug and Trace Usage
+
+Debug and Trace log messages will be displayed on the console.
 
 ```cpp
-MY_PROJECT_NAME_DEBUG(...);
-MY_PROJECT_NAME_TRACE(...); // can be turned off as shown in example
+MY_PROJECT_DEBUG(...);
+MY_PROJECT_TRACE(...); // can be turned off as shown in example
 ```
 
-#### Change Mode on Runtime
+#### Change Mode during Runtime
 
-This feature only available in Debug mode. The user can easily switch on / off `trace` and `debug` modes during runtime.
+This feature only available in Debug mode and Runtime Debug mode. The user can easily switch on / off `trace` and `debug` modes during runtime.
 
 ```cpp
 lspdlog::DEBUG_ON(); // enable debug level
@@ -86,6 +106,7 @@ project(my_project)
 
 # Set 'ON' to enable 'TRACE' macro.
 option(LSPDLOG_ENABLE_TRACE_LOGGING "Enable trace logging." OFF)
+option(LSPDLOG_RUNTIME_DEBUG "Enable debug switcher runtime." OFF)
 
 find_package(Threads REQUIRED)                         #<-- necessary
 
