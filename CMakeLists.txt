@@ -59,5 +59,5 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/internal/logging.h.in "${CONFIG_DIR}/
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/internal/wrapper.h.in "${CONFIG_DIR}/wrapper.h")
 
 set(${PROJECT_NAME}_LSPDLOG_INCLUDE_DIRS
-    ${${PROJECT_NAME}_LSPDLOG_INCLUDE_DIRS}
+    ${LSPDLOG_INCLUDE_DIRS}
     ${PROJECT_BINARY_DIR}/lspdlog/config PARENT_SCOPE)
