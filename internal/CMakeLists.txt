@@ -1,5 +1,0 @@
-cmake_minimum_required(VERSION 2.8.8)
-
-set(LSPDLOG_INCLUDE_DIRS
-    ${LSPDLOG_INCLUDE_DIRS}
-    ${CMAKE_CURRENT_SOURCE_DIR}/spdlog/include PARENT_SCOPE)

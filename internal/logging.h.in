@@ -12,9 +12,16 @@
 
 #cmakedefine _LSPDLOG_COMPILER_SUPPORTS_CONSTEXPR_FUNC_
 
-#include "wrapper.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/async.h"
+#include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
 
-namespace {
+// for getpwuid
+#include <pwd.h>
+#include <sstream>
+
+namespace @PROJECT_NAME_LOWS@ {
 
 #if ${_LSPDLOG_ENABLE_DEBUG_}
 #ifndef _RUNTIME_MODE_CONTROL_
@@ -215,51 +222,31 @@ inline /*constexpr*/ void Logger::disable_trace() const noexcept {
 #endif
 #endif
 
-} /* namespace */
-
 namespace lspdlog {
 namespace details {
-using Lspdlogger = Singleton<Logger>;
+using Lspdlogger = Singleton<@PROJECT_NAME_LOWS@::Logger>;
 } /* namespace details */
-
-#define @PROJECT_NAME_CAPS@_INFO(...) lspdlog::details::Lspdlogger::get() \
-    .info(__VA_ARGS__);
+} // namespace lspdlog
 
 template <typename... Args>
 inline void INFO(Args&&... args) {
   @PROJECT_NAME_CAPS@_INFO(std::forward<Args>(args)...);
 }
 
-#define @PROJECT_NAME_CAPS@_WARN(...) lspdlog::details::Lspdlogger::get() \
-    .warn(__VA_ARGS__);
-
 template <typename... Args>
 inline void WARN(Args&&... args) {
   @PROJECT_NAME_CAPS@_WARN(std::forward<Args>(args)...);
 }
-
-#define @PROJECT_NAME_CAPS@_ERROR(...) lspdlog::details::Lspdlogger::get() \
-    .error(__VA_ARGS__);
 
 template <typename... Args>
 inline void ERROR(Args&&... args) {
   @PROJECT_NAME_CAPS@_ERROR(std::forward<Args>(args)...);
 }
 
-#define @PROJECT_NAME_CAPS@_CRITICAL(...) lspdlog::details::Lspdlogger::get() \
-    .critical(__VA_ARGS__);
-
 template <typename... Args>
 inline void CRITICAL(Args&&... args) {
   @PROJECT_NAME_CAPS@_CRITICAL(std::forward<Args>(args)...);
 }
-
-#if ${_LSPDLOG_ENABLE_DEBUG_}
-#define @PROJECT_NAME_CAPS@_DEBUG(...) lspdlog::details::Lspdlogger::get() \
-    .debug(__VA_ARGS__);
-#else
-#define @PROJECT_NAME_CAPS@_DEBUG(...)
-#endif
 
 template <typename... Args>
 inline void DEBUG(Args&&... args) {
@@ -267,31 +254,52 @@ inline void DEBUG(Args&&... args) {
 }
 
 #if ${_LSPDLOG_ENABLE_TRACE_LOGGING_}
-#define @PROJECT_NAME_CAPS@_TRACE(...) lspdlog::details::Lspdlogger::get() \
+template <typename... Args>
+inline void TRACE(Args&&... args) {
+  @PROJECT_NAME_CAPS@_TRACE(std::forward<Args>(args)...);
+}
+#endif
+
+} /* namespace @PROJECT_NAME_LOWS@ */
+
+#define @PROJECT_NAME_CAPS@_INFO(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+    .info(__VA_ARGS__);
+
+#define @PROJECT_NAME_CAPS@_WARN(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+    .warn(__VA_ARGS__);
+
+#define @PROJECT_NAME_CAPS@_ERROR(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+    .error(__VA_ARGS__);
+
+#define @PROJECT_NAME_CAPS@_CRITICAL(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+    .critical(__VA_ARGS__);
+
+#if ${_LSPDLOG_ENABLE_DEBUG_}
+#define @PROJECT_NAME_CAPS@_DEBUG(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+    .debug(__VA_ARGS__);
+#else
+#define @PROJECT_NAME_CAPS@_DEBUG(...)
+#endif
+
+#if ${_LSPDLOG_ENABLE_TRACE_LOGGING_}
+#define @PROJECT_NAME_CAPS@_TRACE(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
     .trace("[", __FILE__, ", ln.", __LINE__ \
     , " : ", __FUNCTION__, "()] ", __VA_ARGS__);
 #else
 #define @PROJECT_NAME_CAPS@_TRACE(...)
 #endif
 
-#if ${_LSPDLOG_ENABLE_TRACE_LOGGING_}
-template <typename... Args>
-inline void TRACE(Args&&... args) {
-  @PROJECT_NAME_CAPS@_TRACE(std::forward<Args>(args)...);
-}
-#else
-#define @PROJECT_NAME_CAPS@_TRACE(...)
-#endif
-
 #ifdef _RUNTIME_MODE_CONTROL_
-inline void DEBUG_ON() { lspdlog::details::Lspdlogger::get().enable_debug(); }
-inline void DEBUG_OFF() { lspdlog::details::Lspdlogger::get().disable_debug(); }
+#define @PROJECT_NAME_CAPS@_DEBUG_ON() @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+    .enable_debug(); 
+#define @PROJECT_NAME_CAPS@_DEBUG_OFF() @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+    .disable_debug();
 #if ${_LSPDLOG_ENABLE_TRACE_LOGGING_}
-inline void TRACE_ON() { lspdlog::details::Lspdlogger::get().enable_trace(); }
-inline void TRACE_OFF() { lspdlog::details::Lspdlogger::get().disable_trace(); }
+#define @PROJECT_NAME_CAPS@_TRACE_ON() @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+    .enable_trace();
+#define @PROJECT_NAME_CAPS@_TRACE_OFF() @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+    .disable_trace();
 #endif
 #endif
-
-}  // namespace lspdlog
 
 #endif /* _@PROJECT_NAME_CAPS@_INTERNAL_CONFIG_LOGGING_H_ */
