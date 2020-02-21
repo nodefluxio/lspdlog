@@ -78,8 +78,8 @@ const auto repeated_brace = std::make_tuple(
 
 class Logger {
 #ifdef _RUNTIME_MODE_CONTROL_
-  std::atomic<bool> on_debug_(false);
-  std::atomic<bool> on_trace_(false);
+  std::atomic<bool> on_debug_;
+  std::atomic<bool> on_trace_;
 #endif
 
  public:
@@ -109,15 +109,15 @@ class Logger {
   void trace(Args&&... args);
 #endif
 
-  /*constexpr*/ bool debug_enabled() const noexcept;
-  /*constexpr*/ bool trace_enabled() const noexcept;
+  bool debug_enabled() const noexcept;
+  bool trace_enabled() const noexcept;
 
 #ifdef _RUNTIME_MODE_CONTROL_
-  /*constexpr*/ void enable_debug() const noexcept;
-  /*constexpr*/ void disable_debug() const noexcept;
+  void enable_debug() noexcept;
+  void disable_debug() noexcept;
 #if ${_LSPDLOG_ENABLE_TRACE_LOGGING_}
-  /*constexpr*/ void enable_trace() const noexcept;
-  /*constexpr*/ void disable_trace() const noexcept;
+  void enable_trace() noexcept;
+  void disable_trace() noexcept;
 #endif
 #endif
 
@@ -125,7 +125,7 @@ class Logger {
   std::shared_ptr<spdlog::logger> console_;
 };
 
-Logger::Logger() {
+Logger::Logger() : on_debug_{false}, on_trace_{false} {
   try {
     console_ = spdlog::stdout_color_mt("@PROJECT_NAME@_main_console");
   } catch (const spdlog::spdlog_ex& ex) {
@@ -186,14 +186,14 @@ void Logger::trace(Args&&... args) {
 }
 #endif
 
-inline /*constexpr*/ bool Logger::debug_enabled() const noexcept {
+bool Logger::debug_enabled() const noexcept {
 #ifdef _RUNTIME_MODE_CONTROL_
   return on_debug_;
 #endif
   return false;
 }
 
-inline /*constexpr*/ bool Logger::trace_enabled() const noexcept {
+bool Logger::trace_enabled() const noexcept {
 #ifdef _RUNTIME_MODE_CONTROL_
   return on_trace_;
 #else
@@ -202,23 +202,23 @@ inline /*constexpr*/ bool Logger::trace_enabled() const noexcept {
 }
 
 #ifdef _RUNTIME_MODE_CONTROL_
-inline /*constexpr*/ void Logger::enable_debug() const noexcept {
+void Logger::enable_debug() noexcept {
   on_debug_ = true;
 }
 
-inline /*constexpr*/ void Logger::disable_debug() const noexcept {
+void Logger::disable_debug() noexcept {
   on_debug_ = false;
   on_trace_ = false;
   console_->warn("[{}] {}", "@PROJECT_NAME@", "debugging off");
 }
 
 #if ${_LSPDLOG_ENABLE_TRACE_LOGGING_}
-inline /*constexpr*/ void Logger::enable_trace() const noexcept {
+void Logger::enable_trace() noexcept {
   on_debug_ = true;
   on_trace_ = true;
 }
 
-inline /*constexpr*/ void Logger::disable_trace() const noexcept {
+void Logger::disable_trace() noexcept {
   on_trace_ = false;
   console_->warn("[{}] {}", "@PROJECT_NAME@", "tracing off");
 }
