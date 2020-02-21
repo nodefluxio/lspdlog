@@ -57,5 +57,5 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/internal/logging.h.in
               "${${PROJECT_NAME}_CONFIG_DIR}/${PROJECT_NAME_LOWS}/logging.hpp")
 
 set(${PROJECT_NAME}_LSPDLOG_INCLUDE_DIRS
-    ${CMAKE_CURRENT_SOURCE_DIR}/spdlog/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/spdlog/include
     ${${PROJECT_NAME}_CONFIG_DIR} PARENT_SCOPE)

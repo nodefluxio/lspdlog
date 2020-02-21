@@ -21,15 +21,12 @@
 #include <pwd.h>
 #include <sstream>
 
-namespace @PROJECT_NAME_LOWS@ {
-
 #if ${_LSPDLOG_ENABLE_DEBUG_}
 #ifndef _RUNTIME_MODE_CONTROL_
-std::atomic<bool> on_debug_(false);
-std::atomic<bool> on_trace_(false);
 #define _RUNTIME_MODE_CONTROL_
 #endif
-#endif
+
+namespace @PROJECT_NAME_LOWS@ {
 
 /**
  * \brief A (thread-safer ?) Singleton implementation
@@ -79,6 +76,11 @@ const auto repeated_brace = std::make_tuple(
                                                             // Should be fine
 
 class Logger {
+#ifdef _RUNTIME_MODE_CONTROL_
+  std::atomic<bool> on_debug_(false);
+  std::atomic<bool> on_trace_(false);
+#endif
+
  public:
   Logger();
   ~Logger();
