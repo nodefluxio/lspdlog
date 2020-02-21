@@ -25,6 +25,7 @@
 #ifndef _RUNTIME_MODE_CONTROL_
 #define _RUNTIME_MODE_CONTROL_
 #endif
+#endif
 
 namespace @PROJECT_NAME_LOWS@ {
 
