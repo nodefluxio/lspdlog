@@ -126,7 +126,7 @@ target_link_libraries(my_project ${CMAKE_THREAD_LIBS_INIT})  #<-- necessary
 and your main file `my_project.cpp`:
 
 ```cpp
-#include "lspdlog/logging.h"
+#include <my_project/logging.h> // my_project must in lower case
 
 int main()
 {
