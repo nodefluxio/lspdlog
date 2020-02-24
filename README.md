@@ -126,7 +126,7 @@ target_link_libraries(my_project ${CMAKE_THREAD_LIBS_INIT})  #<-- necessary
 and your main file `my_project.cpp`:
 
 ```cpp
-#include <my_project/logging.h> // my_project must in lower case
+#include <my_project/logging.hpp> // my_project must in lower case
 
 int main()
 {
