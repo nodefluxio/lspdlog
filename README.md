@@ -91,10 +91,10 @@ MY_PROJECT_TRACE(...); // can be turned off as shown in example
 This feature only available in Debug mode and Runtime Debug mode. The user can easily switch on / off `trace` and `debug` modes during runtime.
 
 ```cpp
-lspdlog::DEBUG_ON(); // enable debug level
-lspdlog::DEBUG_OFF(); // disable debug level
-lspdlog::TRACE_ON(); // enable trace level
-lspdlog::TRACE_OFF(); // disable trace level
+MY_PROJECT_DEBUG_ON(); // enable debug level
+MY_PROJECT_TRACE_ON(); // enable trace level
+MY_PROJECT_TRACE_OFF(); // disable trace level
+MY_PROJECT_DEBUG_OFF(); // disable debug level
 ```
 
 ## Usage Example
@@ -167,19 +167,6 @@ Hello world.
 [2019-07-16 10:56:44.441016740] [warning] [my_project] way   2
 [2019-07-16 10:56:44.441038220] [error] [my_project] easy
 [2019-07-16 10:56:44.441040957] [critical] [my_project] peasy
-```
-
-## Alternative Function
-
-If the macro definition is out-of-scope, these functions are available to use.
-
-```cpp
-lspdlog::INFO(...);
-lspdlog::WARN(...);
-lspdlog::ERROR(...);
-lspdlog::CRITICAL(...);
-lspdlog::DEBUG(...);
-lspdlog::TRACE(...);
 ```
 
 ## ToDo
