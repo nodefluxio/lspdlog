@@ -125,7 +125,11 @@ class Logger {
   std::shared_ptr<spdlog::logger> console_;
 };
 
-Logger::Logger() : on_debug_{false}, on_trace_{false} {
+Logger::Logger()
+#ifdef _RUNTIME_MODE_CONTROL_
+ : on_debug_{false}, on_trace_{false}
+#endif
+  {
   try {
     console_ = spdlog::stdout_color_mt("@PROJECT_NAME@_main_console");
   } catch (const spdlog::spdlog_ex& ex) {
