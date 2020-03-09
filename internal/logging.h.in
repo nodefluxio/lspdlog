@@ -27,6 +27,7 @@
 #endif
 #endif
 
+namespace internal {
 namespace @PROJECT_NAME_LOWS@ {
 
 /**
@@ -268,28 +269,29 @@ inline void TRACE(Args&&... args) {
 #endif
 
 } /* namespace @PROJECT_NAME_LOWS@ */
+} /* namespace internal */
 
-#define @PROJECT_NAME_CAPS@_INFO(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+#define @PROJECT_NAME_CAPS@_INFO(...) internal::@PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
     .info(__VA_ARGS__);
 
-#define @PROJECT_NAME_CAPS@_WARN(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+#define @PROJECT_NAME_CAPS@_WARN(...) internal::@PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
     .warn(__VA_ARGS__);
 
-#define @PROJECT_NAME_CAPS@_ERROR(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+#define @PROJECT_NAME_CAPS@_ERROR(...) internal::@PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
     .error(__VA_ARGS__);
 
-#define @PROJECT_NAME_CAPS@_CRITICAL(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+#define @PROJECT_NAME_CAPS@_CRITICAL(...) internal::@PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
     .critical(__VA_ARGS__);
 
 #if ${_LSPDLOG_ENABLE_DEBUG_}
-#define @PROJECT_NAME_CAPS@_DEBUG(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+#define @PROJECT_NAME_CAPS@_DEBUG(...) internal::@PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
     .debug(__VA_ARGS__);
 #else
 #define @PROJECT_NAME_CAPS@_DEBUG(...)
 #endif
 
 #if ${_LSPDLOG_ENABLE_TRACE_LOGGING_}
-#define @PROJECT_NAME_CAPS@_TRACE(...) @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+#define @PROJECT_NAME_CAPS@_TRACE(...) internal::@PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
     .trace("[", __FILE__, ", ln.", __LINE__ \
     , " : ", __FUNCTION__, "()] ", __VA_ARGS__);
 #else
@@ -297,14 +299,14 @@ inline void TRACE(Args&&... args) {
 #endif
 
 #ifdef _RUNTIME_MODE_CONTROL_
-#define @PROJECT_NAME_CAPS@_DEBUG_ON() @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+#define @PROJECT_NAME_CAPS@_DEBUG_ON() internal::@PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
     .enable_debug(); 
-#define @PROJECT_NAME_CAPS@_DEBUG_OFF() @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+#define @PROJECT_NAME_CAPS@_DEBUG_OFF() internal::@PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
     .disable_debug();
 #if ${_LSPDLOG_ENABLE_TRACE_LOGGING_}
-#define @PROJECT_NAME_CAPS@_TRACE_ON() @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+#define @PROJECT_NAME_CAPS@_TRACE_ON() internal::@PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
     .enable_trace();
-#define @PROJECT_NAME_CAPS@_TRACE_OFF() @PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
+#define @PROJECT_NAME_CAPS@_TRACE_OFF() internal::@PROJECT_NAME_LOWS@::lspdlog::details::Lspdlogger::get() \
     .disable_trace();
 #endif
 #endif
